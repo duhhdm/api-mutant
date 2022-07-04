@@ -1,6 +1,10 @@
 package com.mercadolivre.apimutante.model;
 
+import com.mercadolivre.apimutante.entity.DnaEntity;
+
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Dna {
     private String[] dna;
@@ -24,10 +28,14 @@ public class Dna {
         return component[index].split("(?!^)");
     }
 
+    public static DnaEntity convertDnaEntity(String dna,Boolean isMutant){
+        return new DnaEntity(null,new Date(),dna,isMutant);
+    }
+
     @Override
     public String toString() {
         return
-                "dna=" + Arrays.toString(dna);
+                Arrays.toString(dna);
 
     }
 }

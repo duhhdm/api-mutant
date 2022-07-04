@@ -1,12 +1,10 @@
 package com.mercadolivre.apimutante;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+//@SpringBootTest
 class ApiMutanteApplicationTests {
 
-    @Test
+    //@Test
     void contextLoads() {
     }
 
