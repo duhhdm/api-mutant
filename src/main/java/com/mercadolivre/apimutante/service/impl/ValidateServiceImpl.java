@@ -1,8 +1,13 @@
 package com.mercadolivre.apimutante.service.impl;
 
 import com.mercadolivre.apimutante.model.Dna;
+import com.mercadolivre.apimutante.model.ErroValidation;
 import com.mercadolivre.apimutante.service.ValidateService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.Date;
 
 @Service
 public class ValidateServiceImpl implements ValidateService {
@@ -82,5 +87,18 @@ public class ValidateServiceImpl implements ValidateService {
             }
         }
         return false;
+    }
+
+    @Override
+    public String isErroValidation(String[] component) {
+        int vertical = component.length;
+        int horizontal = Dna.lineLetter(1,component).length;
+
+        if(Arrays.asList(component).isEmpty())
+            return "Nenhum dna informado";
+        if(vertical!=horizontal){
+            return "Dna informado incorreto";
+        }
+        return "";
     }
 }

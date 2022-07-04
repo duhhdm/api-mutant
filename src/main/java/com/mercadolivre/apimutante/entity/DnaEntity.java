@@ -18,9 +18,9 @@ public class DnaEntity {
     String dna;
 
     @Column
-    Boolean isMutant;
+    String isMutant;
 
-    public DnaEntity(Integer id, Date date, String dna, Boolean isMutant) {
+    public DnaEntity(Integer id, Date date, String dna, String isMutant) {
         this.id = id;
         this.date = date;
         this.dna = dna;
@@ -55,11 +55,11 @@ public class DnaEntity {
         this.dna = dna;
     }
 
-    public Boolean getMutant() {
+    public String getMutant() {
         return isMutant;
     }
 
-    public void setMutant(Boolean mutant) {
+    public void setMutant(String mutant) {
         isMutant = mutant;
     }
 }

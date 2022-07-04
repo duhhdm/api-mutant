@@ -28,7 +28,7 @@ public class Dna {
         return component[index].split("(?!^)");
     }
 
-    public static DnaEntity convertDnaEntity(String dna,Boolean isMutant){
+    public static DnaEntity convertDnaEntity(String dna,String isMutant){
         return new DnaEntity(null,new Date(),dna,isMutant);
     }
 
