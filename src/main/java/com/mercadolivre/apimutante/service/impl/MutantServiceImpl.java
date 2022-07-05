@@ -2,14 +2,12 @@ package com.mercadolivre.apimutante.service.impl;
 
 import com.mercadolivre.apimutante.entity.DnaEntity;
 import com.mercadolivre.apimutante.model.Dna;
-import com.mercadolivre.apimutante.model.ErroValidation;
 import com.mercadolivre.apimutante.model.MutantEnun;
 import com.mercadolivre.apimutante.model.StatsModel;
 import com.mercadolivre.apimutante.repository.DnaRepository;
 import com.mercadolivre.apimutante.service.MutantService;
 import com.mercadolivre.apimutante.service.ValidateService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -45,7 +43,6 @@ public class MutantServiceImpl implements MutantService {
     @Override
     public StatsModel countMutant() {
         List<DnaEntity> list = dnaRepository.findAll();
-        StatsModel statsModel = new StatsModel();
         Double mutant = 0.0;
         Double human = 0.0;
         Double ratio = 0.0;

@@ -1,16 +1,11 @@
 package com.mercadolivre.apimutante.service.impl;
 
+import com.mercadolivre.apimutante.model.ContModelDiagonal;
 import com.mercadolivre.apimutante.model.Dna;
-import com.mercadolivre.apimutante.model.ErroValidation;
 import com.mercadolivre.apimutante.service.ValidateService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 
 @Service
 public class ValidateServiceImpl implements ValidateService {
@@ -24,56 +19,87 @@ public class ValidateServiceImpl implements ValidateService {
         int positionLetterFixe = 0;
         int positionLetter = 0;
         int positionLetterCompare = 1;
-        int contProcess=0;
+        int contProcess = 0;
         int contTotal = 0;
         boolean start = true;
         boolean muda = false;
         String letter = "";
-        while (start) {
-            String[] listLetter = Dna.lineLetter(countList, component);
-            String[] listLetterCompare = Dna.lineLetter(countListCompare, component);
-            if (!Dna.compareComponent(listLetter[positionLetter], listLetterCompare[positionLetterCompare], letter)) {
-                isValidLetter = 1;
-            }
-            letter = listLetterCompare[positionLetterCompare];
-            isValidLetter++;
-            if(countList<component.length-2)
-                countList++;
-            if(countListCompare<component.length-1)
-                countListCompare++;
-            if(positionLetter<= component.length-2)
-                positionLetter++;
-            if(positionLetterCompare< component.length-1)
-                positionLetterCompare++;
+        ContModelDiagonal contModelDiagonal = new ContModelDiagonal(countListFixe, countList, countListCompare, isValidLetter, positionLetterFixe, positionLetter, positionLetterCompare, contProcess, contTotal, start, muda, letter);
+        while (contModelDiagonal.isStart()) {
 
-            if (isValidLetter < 3 && positionLetter > listLetter.length - 2) {
-                contTotal++;
-                countListFixe= contProcess;
-                if(countListFixe<=component.length-2) {
-                    countList = countListFixe;
-                    countListCompare = countListFixe + 1;
-                }
-                positionLetterFixe=contTotal+1;
-                if(contTotal>= component.length-1) {
-                    contProcess++;
-                    muda=true;
-                    positionLetterFixe=0;
-                }
-                if(muda){
-                    contTotal=contProcess;
-                    muda=false;
-                }
-                if(positionLetterFixe<= component.length-2)
-                    positionLetter=positionLetterFixe;
-                if(positionLetterFixe<=component.length-2) {
-                    positionLetterCompare = positionLetterFixe + 1;
-                }
+//            if (contProcess < component.length) {
+            String[] listLetter = Dna.lineLetter(contModelDiagonal.getCountList(), component);
+            String[] listLetterCompare = Dna.lineLetter(contModelDiagonal.getCountListCompare(), component);
+            if (!Dna.compareComponent(listLetter[contModelDiagonal.getPositionLetter()],
+                    listLetterCompare[contModelDiagonal.getPositionLetterCompare()], contModelDiagonal.getLetter())) {
+                contModelDiagonal.setIsValidLetter(1);
             }
-            if (isValidLetter == 4)
+            contModelDiagonal.setLetter(listLetterCompare[contModelDiagonal.getPositionLetterCompare()]);
+            contModelDiagonal.setIsValidLetter(contModelDiagonal.getIsValidLetter() + 1);
+//                if (countList < component.length - 2)
+//                    countList++;
+//                if (countListCompare < component.length - 1)
+//                    countListCompare++;
+//                if (positionLetter <= component.length - 2)
+//                    positionLetter++;
+//                if (positionLetterCompare < component.length - 1)
+//                    positionLetterCompare++;
+            contModelDiagonal = contModelDiagonal.sumList(component, contModelDiagonal);
+            contModelDiagonal = contModelDiagonal.sumListFixe(contModelDiagonal, component, listLetter);
+//                if (contModelDiagonal.getIsValidLetter() < 3 && contModelDiagonal.getPositionLetter() > listLetter.length - 2) {
+//                    contTotal++;
+//                    countListFixe = contProcess;
+//                    if (countListFixe <= component.length - 2) {
+//                        countList = countListFixe;
+//                        countListCompare = countListFixe + 1;
+//                    }
+//                    positionLetterFixe = contTotal + 1;
+//                    if (contTotal >= component.length - 1) {
+//                        contProcess++;
+//                        muda = true;
+//                        positionLetterFixe = 0;
+//                    }
+//                    if (muda) {
+//                        contTotal = contProcess;
+//                        muda = false;
+//                    }
+//                    if (positionLetterFixe <= component.length - 2)
+//                        positionLetter = positionLetterFixe;
+//                    if (positionLetterFixe <= component.length - 2) {
+//                        positionLetterCompare = positionLetterFixe + 1;
+//                    }
+
+//                if (isValidLetter < 3 && positionLetter > listLetter.length - 2) {
+//                    contTotal++;
+//                    countListFixe = contProcess;
+//                    if (countListFixe <= component.length - 2) {
+//                        countList = countListFixe;
+//                        countListCompare = countListFixe + 1;
+//                    }
+//                    positionLetterFixe = contTotal + 1;
+//                    if (contTotal >= component.length - 1) {
+//                        contProcess++;
+//                        muda = true;
+//                        positionLetterFixe = 0;
+//                    }
+//                    if (muda) {
+//                        contTotal = contProcess;
+//                        muda = false;
+//                    }
+//                    if (positionLetterFixe <= component.length - 2)
+//                        positionLetter = positionLetterFixe;
+//                    if (positionLetterFixe <= component.length - 2) {
+//                        positionLetterCompare = positionLetterFixe + 1;
+//                    }
+            if (contModelDiagonal.getIsValidLetter() == 4)
                 return true;
-            if (contProcess > component.length - 1)
-                start = false;
+            if (contModelDiagonal.getContProcess() > component.length - 1)
+                contModelDiagonal.setStart(false);
         }
+//            }
+
+//        }
+
         return false;
     }
 
@@ -133,4 +159,6 @@ public class ValidateServiceImpl implements ValidateService {
         }
         return "";
     }
+
+
 }

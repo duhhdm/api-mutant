@@ -1,8 +1,5 @@
 package com.mercadolivre.apimutante.service;
 
-import com.mercadolivre.apimutante.model.ErroValidation;
-import org.springframework.http.ResponseEntity;
-
 public interface ValidateService {
 
     boolean isValidDiagonal(String[] component);

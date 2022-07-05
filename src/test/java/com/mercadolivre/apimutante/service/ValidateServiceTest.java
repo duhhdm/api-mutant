@@ -9,8 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -56,8 +55,19 @@ public class ValidateServiceTest {
 
     @Test
     public void isValidDiagonalNotOk(){
-        String[] dna = {"XZZZGA", "ZAGTGC", "ZTATGT", "ZAGYGG", "ZCYCTA", "BCACTG"};;
+        String[] dna = {"XZZZGA", "ZAGTGC", "ZTATGT", "ZAGYGG", "ZCYCTA", "BCACTG"};
         boolean test = validateServiceImpl.isValidDiagonal(dna);
         assertFalse(test);
+    }
+    @Test
+    public void isValidateDnaNotOkDnaIsIncorret(){
+        String[] dna = {"XZZZGA", "ZAGTGC", "ZTATGT", "ZAGYGG", "ZCYCTA"};
+        assertEquals(validateServiceImpl.isErroValidation(dna),"Dna informado incorreto");
+    }
+
+    @Test
+    public void isValidateDnaNotOk(){
+        String[] dna = {"XZZZGA", "ZAGTGC", "ZTATGT", "ZAGYGG", "ZCYCTA", "BCACTG"};
+        assertEquals(validateServiceImpl.isErroValidation(dna),"");
     }
 }
