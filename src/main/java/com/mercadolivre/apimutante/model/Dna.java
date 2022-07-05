@@ -3,7 +3,6 @@ package com.mercadolivre.apimutante.model;
 import com.mercadolivre.apimutante.entity.DnaEntity;
 
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 
 public class Dna {

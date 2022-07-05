@@ -4,43 +4,75 @@ import com.mercadolivre.apimutante.model.Dna;
 import com.mercadolivre.apimutante.model.ErroValidation;
 import com.mercadolivre.apimutante.service.ValidateService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class ValidateServiceImpl implements ValidateService {
 
     @Override
     public boolean isValidDiagonal(String[] component) {
-        int isCompareValue = 1;
-        int position = 1;
+        int countListFixe = 0;
         int countList = 0;
+        int countListCompare = 1;
+        int isValidLetter = 1;
+        int positionLetterFixe = 0;
+        int positionLetter = 0;
+        int positionLetterCompare = 1;
+        int contProcess=0;
+        int contTotal = 0;
+        boolean start = true;
+        boolean muda = false;
         String letter = "";
-        for (int i = 0; i< component.length; i++) {
-
-            if(component.length-1<position || component.length-1<i)
-                return false;
-            String[] listLetter = Dna.lineLetter(i,component);
-            String[] listLetterCompare = Dna.lineLetter(position,component);
-
-            if(!Dna.compareComponent(listLetter[i],listLetterCompare[position],letter)){
-                isCompareValue = 1;
+        while (start) {
+            String[] listLetter = Dna.lineLetter(countList, component);
+            String[] listLetterCompare = Dna.lineLetter(countListCompare, component);
+            if (!Dna.compareComponent(listLetter[positionLetter], listLetterCompare[positionLetterCompare], letter)) {
+                isValidLetter = 1;
             }
-            if(position>4 && isCompareValue<=4) {
-                if(position<=4 && countList>5)
-                    position = countList -1;
-                else
-                    position = countList + 1;
-                i = countList++;
-            }
+            letter = listLetterCompare[positionLetterCompare];
+            isValidLetter++;
+            if(countList<component.length-2)
+                countList++;
+            if(countListCompare<component.length-1)
+                countListCompare++;
+            if(positionLetter<= component.length-2)
+                positionLetter++;
+            if(positionLetterCompare< component.length-1)
+                positionLetterCompare++;
 
-            letter = listLetter[position];
-            position++;
-            isCompareValue++;
-            if(isCompareValue==4)
+            if (isValidLetter < 3 && positionLetter > listLetter.length - 2) {
+                contTotal++;
+                countListFixe= contProcess;
+                if(countListFixe<=component.length-2) {
+                    countList = countListFixe;
+                    countListCompare = countListFixe + 1;
+                }
+                positionLetterFixe=contTotal+1;
+                if(contTotal>= component.length-1) {
+                    contProcess++;
+                    muda=true;
+                    positionLetterFixe=0;
+                }
+                if(muda){
+                    contTotal=contProcess;
+                    muda=false;
+                }
+                if(positionLetterFixe<= component.length-2)
+                    positionLetter=positionLetterFixe;
+                if(positionLetterFixe<=component.length-2) {
+                    positionLetterCompare = positionLetterFixe + 1;
+                }
+            }
+            if (isValidLetter == 4)
                 return true;
+            if (contProcess > component.length - 1)
+                start = false;
         }
         return false;
     }
