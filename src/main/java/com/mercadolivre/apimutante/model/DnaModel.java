@@ -4,8 +4,9 @@ import com.mercadolivre.apimutante.entity.DnaEntity;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Locale;
 
-public class Dna {
+public class DnaModel {
     private String[] dna;
 
 
@@ -18,9 +19,9 @@ public class Dna {
     }
 
     public static boolean compareComponent(String compare1, String compare2, String letter){
-        if(compare1.equals(compare2) && letter.isEmpty()){
+        if(compare1.toUpperCase(Locale.ROOT).equals(compare2.toUpperCase(Locale.ROOT)) && letter.isEmpty()){
             return true;
-        }else return compare1.equals(compare2) && compare2.equals(letter);
+        }else return compare1.toUpperCase(Locale.ROOT).equals(compare2.toUpperCase(Locale.ROOT)) && compare2.toUpperCase(Locale.ROOT).equals(letter.toUpperCase(Locale.ROOT));
     }
 
     public static String[] lineLetter(int index, String[] component){

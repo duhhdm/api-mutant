@@ -2,7 +2,7 @@ package com.mercadolivre.apimutante.controller;
 
 import com.google.gson.Gson;
 import com.mercadolivre.apimutante.entity.DnaEntity;
-import com.mercadolivre.apimutante.model.Dna;
+import com.mercadolivre.apimutante.model.DnaModel;
 import com.mercadolivre.apimutante.model.MutantEnun;
 import com.mercadolivre.apimutante.model.StatsModel;
 import com.mercadolivre.apimutante.repository.DnaRepository;
@@ -21,7 +21,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -44,19 +43,19 @@ public class MutantControllerTest {
 
     @Test
     public void isMutantTrue() throws Exception {
-        Dna dna = new Dna();
+        DnaModel dnaModel = new DnaModel();
         String[] list = {"ZZZXGA",
                 "AGZXGC",
                 "ZTAZGT",
                 "ZAGYZG",
                 "ZCYCTA",
                 "BCACTG"};
-        dna.setDna(list);
+        dnaModel.setDna(list);
         Gson gson = new Gson();
-        String json = gson.toJson(dna);
-        Mockito.when(mutantService.validateDna(dna.getDna())).thenReturn("");
+        String json = gson.toJson(dnaModel);
+        Mockito.when(mutantService.validateDna(dnaModel.getDna())).thenReturn("");
         Mockito.when(mutantService.isMutant(list)).thenReturn(true);
-        Mockito.when(dnaRepository.save(Dna.convertDnaEntity(list.toString(), MutantEnun.MUTANT.toString()))).thenReturn(Dna.convertDnaEntity(list.toString(), MutantEnun.MUTANT.toString()));
+        Mockito.when(dnaRepository.save(DnaModel.convertDnaEntity(list.toString(), MutantEnun.MUTANT.toString()))).thenReturn(DnaModel.convertDnaEntity(list.toString(), MutantEnun.MUTANT.toString()));
         this.mockMvc.perform(post("/mutant").content(json)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
@@ -64,14 +63,14 @@ public class MutantControllerTest {
 
     @Test
     public void isMutantFalse() throws Exception {
-        Dna dna = new Dna();
+        DnaModel dnaModel = new DnaModel();
         String[] list = {"ZGYGGA", "ZAGTGC", "XTATGT", "ZAGYGG", "ZCYCTA", "BCACTG"};
-        dna.setDna(list);
+        dnaModel.setDna(list);
         Gson gson = new Gson();
-        String json = gson.toJson(dna);
-        Mockito.when(mutantService.validateDna(dna.getDna())).thenReturn("");
+        String json = gson.toJson(dnaModel);
+        Mockito.when(mutantService.validateDna(dnaModel.getDna())).thenReturn("");
         Mockito.when(mutantService.isMutant(list)).thenReturn(false);
-        Mockito.when(dnaRepository.save(Dna.convertDnaEntity(list.toString(), MutantEnun.MUTANT.toString()))).thenReturn(Dna.convertDnaEntity(list.toString(), MutantEnun.MUTANT.toString()));
+        Mockito.when(dnaRepository.save(DnaModel.convertDnaEntity(list.toString(), MutantEnun.MUTANT.toString()))).thenReturn(DnaModel.convertDnaEntity(list.toString(), MutantEnun.MUTANT.toString()));
         this.mockMvc.perform(post("/mutant").content(json)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isForbidden());
@@ -79,12 +78,12 @@ public class MutantControllerTest {
 
     @Test
     public void isMutantValidateInvalid() throws Exception {
-        Dna dna = new Dna();
+        DnaModel dnaModel = new DnaModel();
         String[] list = {"ABC"};
-        dna.setDna(list);
+        dnaModel.setDna(list);
         Gson gson = new Gson();
-        String json = gson.toJson(dna);
-        Mockito.when(mutantService.validateDna(dna.getDna())).thenReturn("Nenhum dna informado");
+        String json = gson.toJson(dnaModel);
+        Mockito.when(mutantService.validateDna(dnaModel.getDna())).thenReturn("Nenhum dna informado");
         this.mockMvc.perform(post("/mutant").content(json)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
