@@ -48,7 +48,7 @@ curl --location --request GET 'http://34.231.32.165:8080/stats' \
 
 '
 
-## :hammer: Acesso ao projeto
+## :hammer: Executar o pacote
 
 `Pré-requisitos`: instalação do Java 8 ou superior e instalação do maven, git.
 
