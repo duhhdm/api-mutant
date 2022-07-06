@@ -12,7 +12,9 @@ Abaixo fiz um desenho macro da arquitetura que desenvolvi.
 - ``Spring Framework``
 - ``Spring Data``
 - ``JUnit``
+- ``Maven``
 - ``REST``
+- ``Git``
 - ``InteliJ IDEA``
 - ``Paradigma de orientação a objetos``
 - ``AWS EC2``
@@ -45,4 +47,19 @@ curl --location --request GET 'http://34.231.32.165:8080/stats' \
 --data-raw '{ "dna": ["ZGYGGA", "ZAGTGC", "ZTATGT", "XAGYGG", "ZCYCTA", "BCACTG"] }
 
 '
+
+## :hammer: Acesso ao projeto
+
+`Pré-requisitos`: instalação do Java 8 ou superior e instalação do maven, git.
+
+`Passo um 1`: Realizar o clone no Git 
+
+`Passo um 2`: Abrir o prompt de comando e realizar o mvn install -U para que realize o download das dependencias.
+
+`Passo um 3`: Realizando o mvn install ele gera o pacote do .jar na pasta target.
+
+`Passo um 4`: Crie uma pasta raiz onde copiara o pacote .jar e criar uma pasta config onde sera incluido a propertie.
+
+`Passo um 5`: No prompt execute o comando java -jar api-mutante-0.0.1-SNAPSHOT.jar para executar no terminal aberto ou caso queira executar o comando
+ nohup java -jar api-mutante-0.0.1-SNAPSHOT.jar & para que fique startado independente do terminal.
 
