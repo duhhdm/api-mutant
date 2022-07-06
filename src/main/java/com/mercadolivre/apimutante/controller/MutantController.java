@@ -1,13 +1,17 @@
 package com.mercadolivre.apimutante.controller;
 
-import com.mercadolivre.apimutante.model.Dna;
+import com.mercadolivre.apimutante.model.DnaModel;
+import com.mercadolivre.apimutante.model.ErroValidation;
 import com.mercadolivre.apimutante.service.MutantService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
+
+import java.util.Date;
 
 @RestController
 public class MutantController {
@@ -16,12 +20,17 @@ public class MutantController {
     MutantService mutantService;
 
     @PostMapping("mutant")
-    public String isMutant(@RequestBody Dna dna){
-        String manipulacao = dna.getDna()[0];
-        System.out.println(manipulacao.contains("A"));
-        String[] listaManipulada = manipulacao.split(String.valueOf(manipulacao.length()));
-        System.out.println(Arrays.toString(listaManipulada));
-        System.out.println(mutantService.isMutant(dna.getDna()));
-        return dna.toString();
+    public ResponseEntity<Object> isMutant(@RequestBody DnaModel dnaModel){
+        String validate =mutantService.validateDna(dnaModel.getDna());
+        if(!validate.isEmpty())
+            return ResponseEntity.badRequest().body(new ErroValidation(validate));
+        if(mutantService.isMutant(dnaModel.getDna()))
+            return ResponseEntity.ok().build();
+        return  ResponseEntity.status(403).build();
+    }
+
+    @GetMapping("stats")
+    public ResponseEntity<Object> stats(){
+        return ResponseEntity.ok(mutantService.countMutant());
     }
 }
